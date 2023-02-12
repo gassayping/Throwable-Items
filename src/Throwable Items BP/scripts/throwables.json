@@ -1,0 +1,15 @@
+{
+	"example:blow_gun": {
+		"throwRate": 400,
+		"projectile": "arrow",
+		"projectileVelo": 10,
+		"consumeOnThrow": false,
+		"changeDataOnThrow": true
+	},
+	"example:rock": {
+		"throwRate": 1,
+		"projectile": "snowball",
+		"projectileVelo": 3,
+		"consumeOnThrow": true
+	}
+}

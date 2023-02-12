@@ -1,0 +1,45 @@
+{
+	"format_version": 2,
+	"header": {
+		"name": "Throwable Items",
+		"description": "A script concept that you can use to create custom throwable items WITHOUT using player.json!",
+		"uuid": "729cbc21-5c24-4da7-889f-311cd5d9207e",
+		"version": [
+			1,
+			0,
+			0
+		],
+		"min_engine_version": [
+			1,
+			17,
+			0
+		]
+	},
+	"modules": [
+		{
+			"type": "data",
+			"uuid": "77b1e1bf-3148-4350-b70e-fdb5214386bb",
+			"version": [
+				1,
+				0,
+				0
+			]
+		},
+		{
+			"type": "javascript",
+			"uuid": "29bf7666-8dcd-44e3-819f-bf1a5f5d7d07",
+			"version": [
+				1,
+				0,
+				0
+			],
+			"entry": "scripts/Main.js"
+		}
+	],
+	"dependencies": [
+		{
+			"module_name": "@minecraft/server",
+			"version": "1.1.0-beta"
+		}
+	]
+}

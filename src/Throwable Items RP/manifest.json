@@ -1,0 +1,29 @@
+{
+	"format_version": 2,
+	"header": {
+		"name": "Throwable Items",
+		"description": "Example items for throwable items concept pack",
+		"uuid": "2ba6a883-5c4b-4355-831d-1e232790fc4c",
+		"version": [
+			1,
+			0,
+			0
+		],
+		"min_engine_version": [
+			1,
+			17,
+			0
+		]
+	},
+	"modules": [
+		{
+			"type": "resources",
+			"uuid": "81bc3d12-fa6f-46cf-8178-1968306cf3f9",
+			"version": [
+				1,
+				0,
+				0
+			]
+		}
+	]
+}
