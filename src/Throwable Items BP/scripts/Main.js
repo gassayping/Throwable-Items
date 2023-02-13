@@ -1,5 +1,5 @@
 import { world, system, Vector, Location, ItemStack } from '@minecraft/server';
-import * as throwables from "throwables.json"
+import { throwables } from "throwables.js";
 
 let playersThrowing = new Map();
 
@@ -32,9 +32,8 @@ function fire(player, item, scheduleId) {
 	if (throwables[item].consumeOnThrow) {
 		player.runCommandAsync(`clear @s ${item} 0 1`);
 	} else if (throwables[item].changeDataOnThrow) {
-		const inv = player.getComponent('minecraft:inventory').container
-		const replaceItem = inv.getItem(player.selectedSlot);
-		replaceItem.data = replaceItem.data + 1;
-		inv.setItem(player.selectedSlot, replaceItem);
+const invSlot = player.getComponent('minecraft:inventory').container.getSlot(player.selectedSlot);
+invSlot.setLore(["Ammo: "+player.id]);
+	console.warn(player.getComponent('minecraft:inventory').container.getSlot(player.selectedSlot).getLore());
 	}
 }
