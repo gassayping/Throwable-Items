@@ -1,4 +1,4 @@
-import { world, system, Vector, Location, ItemStack } from '@minecraft/server';
+import { world, system, Vector, Location, ItemStack, MinecraftItemTypes } from '@minecraft/server';
 import { throwables } from "throwables.js";
 
 let playersThrowing = new Map();
@@ -13,7 +13,7 @@ world.events.itemStartCharge.subscribe(eventData => {
 			return;
 		}
 		fire(player, item, throwLoop);
-	}, throwables[item].throwRate)
+	}, throwables[item].fireRate)
 	playersThrowing.set(player.id, throwLoop);
 	fire(player, item, throwLoop);
 })
@@ -29,11 +29,26 @@ function fire(player, item, scheduleId) {
 	}
 	const { x, y, z } = Vector.add(player.headLocation, player.viewDirection);
 	player.dimension.spawnEntity(throwables[item].projectile, new Location(x, y, z)).setVelocity(new Vector(player.viewDirection.x * throwables[item].projectileVelo, player.viewDirection.y * throwables[item].projectileVelo, player.viewDirection.z * throwables[item].projectileVelo));
-	if (throwables[item].consumeOnThrow) {
-		player.runCommandAsync(`clear @s ${item} 0 1`);
-	} else if (throwables[item].changeDataOnThrow) {
-const invSlot = player.getComponent('minecraft:inventory').container.getSlot(player.selectedSlot);
-invSlot.setLore(["Ammo: "+player.id]);
-	console.warn(player.getComponent('minecraft:inventory').container.getSlot(player.selectedSlot).getLore());
+	const ammoObj = throwables[item].ammo;
+	if (!ammoObj) return;
+	ammoObj.consume ??= 1;
+	if (ammoObj.item) {
+		player.runCommandAsync(`clear @s ${item} 0 ${ammoObj.consume}`);
+	} else if (ammoObj.scoreboard) {
+		try {
+			ammoObj.scoreboard.id = world.scoreboard.addObjective(ammoObj.scoreboard.name, ammoObj.scoreboard.name);
+			ammoObj.scoreboard.id.setScore(player, ammoObj.scoreboard.max);
+		} catch {
+			console.warn("catch");
+			ammoObj.scoreboard.id = world.scoreboard.getObjective(ammoObj.scoreboard.name);
+			ammoObj.scoreboard.id.setScore(player.scoreboard, ammoObj.scoreboard.max);
+
+		}
+		const ammo = player.scoreboard.getScore(ammoObj.scoreboard.id) - 1;
+		if (ammo <= 0) {
+			player.getComponent("minecraft:inventory").container.getSlot(player.currentSlot).clearItem();
+		} else {
+			player.scoreboard.setScore(ammoObj.scoreboard.id, ammo)
+		}
 	}
 }
